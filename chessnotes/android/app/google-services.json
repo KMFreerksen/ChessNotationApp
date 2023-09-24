@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "952107980978",
+    "project_id": "chessnotes-app",
+    "storage_bucket": "chessnotes-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952107980978:android:defb532ff8a218f98851ab",
+        "android_client_info": {
+          "package_name": "com.kfreerksen.chessnotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6yv-K3-GIdRLbl0Cv84ctsI0xFDgPjhE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
