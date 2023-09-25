@@ -1,4 +1,3 @@
-import 'dart:js';
 
 import 'package:chessnotes/firebase_options.dart';
 import 'package:chessnotes/views/login_view.dart';
@@ -40,14 +39,13 @@ class HomePage extends StatelessWidget {
               final user = FirebaseAuth.instance.currentUser;
               if (user != null) {
                 if (user.emailVerified) {
-                  print('Email is verified');
+                  return const NotesView();
                 } else {
                   return const VerifyEmailView();
                 }
               } else {
                 return const LoginView();
               }
-              return const Text('Done');
             default:
               return const CircularProgressIndicator();
           }
@@ -56,6 +54,23 @@ class HomePage extends StatelessWidget {
   }
 }
 
+class NotesView extends StatefulWidget {
+  const NotesView({super.key});
+
+  @override
+  State<NotesView> createState() => _NotesViewState();
+}
+
+class _NotesViewState extends State<NotesView> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Main UI'),
+      ),
+      body: const Text('Hello world'), 
+    );
+  }
+}
 
 
 
