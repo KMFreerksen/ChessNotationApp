@@ -1,7 +1,7 @@
 import 'package:chessnotes/constants/routes.dart';
+import 'package:chessnotes/utilities/show_error_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -68,14 +68,22 @@ class _LoginViewState extends State<LoginView> {
                   (route) => false,
                 );
               } on FirebaseAuthException catch (e) {
-                if (e.code == 'user-not-found') {
-                  devtools.log('User not found');
-                } else if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
-                  devtools.log('Invalid Logon Credentials');
+                if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
+                  await showErrorDialog(
+                    context, 
+                    'Invalid Login Credentials',
+                  );
                 } else {
-                  devtools.log('SOMETHING ELSE HAPPENED');
-                  devtools.log(e.code);
+                  await showErrorDialog(
+                    context, 
+                    'Error: ${e.code}',
+                  );
                 }
+              } catch (e) {
+                await showErrorDialog(
+                    context, 
+                    e.toString(),
+                  );
               }
             }, 
               child: const Text('Login'),
@@ -94,3 +102,4 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
+
