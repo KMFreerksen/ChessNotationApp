@@ -55,9 +55,7 @@ class HomePage extends StatelessWidget {
   }
 }
 
-enum MenuAction {
-  logout
-}
+enum MenuAction { logout }
 
 class NotesView extends StatefulWidget {
   const NotesView({super.key});
@@ -82,20 +80,21 @@ class _NotesViewState extends State<NotesView> {
                     await FirebaseAuth.instance.signOut();
                     Navigator.of(context).pushNamedAndRemoveUntil(
                       '/login/', 
-                      (_) => false);
+                      (_) => false,
+                    );
                   }
               }
             },
             itemBuilder: (context) {
               return const [
                 PopupMenuItem<MenuAction>(
-                value: MenuAction.logout,
-                child: Text('Log out'),
+                  value: MenuAction.logout,
+                  child: Text('Log out'),
                 ),
               ];
-            }
+            },
           )
-        ]
+        ],
       ),
       body: const Text('Hello world'), 
     );
