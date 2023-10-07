@@ -1,7 +1,8 @@
-import 'package:chessnotes/constants/routes.dart';
-import 'package:chessnotes/utilities/show_error_dialog.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:chessnotes/constants/routes.dart';
+import 'package:chessnotes/services/auth/auth_service.dart';
+import 'package:chessnotes/utilities/show_error_dialog.dart';
+import 'package:chessnotes/services/auth/auth_exceptions.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -12,7 +13,7 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   late final TextEditingController _email;
-  late final TextEditingController _password; 
+  late final TextEditingController _password;
 
   @override
   void initState() {
@@ -33,7 +34,7 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
-        ),
+      ),
       body: Column(
         children: [
           TextField(
@@ -55,56 +56,49 @@ class _LoginViewState extends State<LoginView> {
             ),
           ),
           TextButton(
-            onPressed:() async {
+            onPressed: () async {
               final email = _email.text;
               final password = _password.text;
-              try { 
-                await FirebaseAuth.instance.signInWithEmailAndPassword(
+              try {
+                await AuthService.firebase().logIn(
                   email: email,
                   password: password,
                 );
-                final user = FirebaseAuth.instance.currentUser;
-                if (user?.emailVerified ?? false) {
+                final user = AuthService.firebase().currentUser;
+                if (user?.isEmailVerified ?? false) {
                   // user's email is verified
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                    notesRoute, 
+                    notesRoute,
                     (route) => false,
                   );
                 } else {
                   // user's email is NOT verified
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                    verifyEmailRoute, 
+                    verifyEmailRoute,
                     (route) => false,
                   );
                 }
-              } on FirebaseAuthException catch (e) {
-                if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
+              } on InvalidLoginCredentialsException {
                   await showErrorDialog(
-                    context, 
+                    context,
                     'Invalid Login Credentials',
                   );
-                } else {
+              } on GenericAuthException {
                   await showErrorDialog(
-                    context, 
-                    'Error: ${e.code}',
-                  );
-                }
-              } catch (e) {
-                await showErrorDialog(
-                    context, 
-                    e.toString(),
+                    context,
+                    'Authentication error',
                   );
               }
-            }, 
-              child: const Text('Login'),
+            },
+            child: const Text('Login'),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
-                registerRoute, 
+                registerRoute,
                 (route) => false,
               );
-            }, 
+            },
             child: const Text('Not registered yet? Register here!'),
           )
         ],
@@ -112,4 +106,3 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
-
