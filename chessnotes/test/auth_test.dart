@@ -3,7 +3,6 @@ import 'package:chessnotes/services/auth/auth_user.dart';
 import 'package:chessnotes/services/auth/auth_provider.dart';
 import 'package:chessnotes/services/auth/auth_exceptions.dart';
 
-
 void main() {
   group('Mock Authentication', () {
     final provider = MockAuthProvider();
@@ -62,8 +61,18 @@ void main() {
       provider.sendEmailVerification();
       final user = provider.currentUser;
       expect(user, isNotNull);
+      expect(user!.isEmailVerified, true);
     });
-    
+
+    test('Should be able to log out and log in again', () async {
+      await provider.logOut();
+      await provider.logIn(
+        email: 'email',
+        password: 'password',
+      );
+      final user = provider.currentUser;
+      expect(user, isNotNull);
+    });
   });
 }
 
