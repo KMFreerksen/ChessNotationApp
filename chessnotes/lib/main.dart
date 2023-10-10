@@ -1,9 +1,11 @@
+import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:chessnotes/constants/routes.dart';
 import 'package:chessnotes/views/login_view.dart';
-import 'package:chessnotes/views/notes_view.dart';
 import 'package:chessnotes/views/register_view.dart';
+import 'package:chessnotes/views/notes/notes_view.dart';
 import 'package:chessnotes/views/verify_email_view.dart';
+import 'package:chessnotes/views/notes/new_note_view.dart';
 import 'package:chessnotes/services/auth/auth_service.dart';
 
 
@@ -21,6 +23,7 @@ void main() {
         registerRoute: (context) => const RegisterView(),
         notesRoute: (context) => const NotesView(),
         verifyEmailRoute: (context) => const VerifyEmailView(),
+        newNoteRoute: (context) => const NewNoteView(),
       },
     ),
   );
