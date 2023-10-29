@@ -4,7 +4,10 @@ import 'package:chessnotes/enums/menu_action.dart';
 import 'package:chessnotes/services/cloud/cloud_note.dart';
 import 'package:chessnotes/services/auth/auth_service.dart';
 import 'package:chessnotes/views/notes/notes_list_view.dart';
+import 'package:chessnotes/services/auth/bloc/auth_bloc.dart';
+import 'package:chessnotes/services/auth/bloc/auth_event.dart';
 import 'package:chessnotes/utilities/dialogs/logout_dialog.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext;
 import 'package:chessnotes/services/cloud/firebase_cloud_storage.dart';
 
 class NotesView extends StatefulWidget {
@@ -42,11 +45,9 @@ class _NotesViewState extends State<NotesView> {
                 case MenuAction.logout:
                   final shouldLogout = await showLogOutDialog(context);
                   if (shouldLogout) {
-                    await AuthService.firebase().logOut();
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      loginRoute,
-                      (_) => false,
-                    );
+                    context.read<AuthBloc>().add(
+                          const AuthEventLogOut(),
+                        );
                   }
               }
             },
